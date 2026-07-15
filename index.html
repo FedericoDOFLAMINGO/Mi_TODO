@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Para mi Angela 💌</title>
+<title>Para mi Princesita 💌</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   :root{
@@ -387,6 +387,7 @@ function abrirSobre(){
   abierto = true;
   document.getElementById('escenario').classList.add('abierto');
   document.getElementById('textoToque').style.display = 'none';
+  iniciarMusica();
   setTimeout(escribirCartas, 500);
 }
 
@@ -431,6 +432,22 @@ function cerrarOverlay(){
 
 // Reproductor de musica
 let sonando = false;
+
+// Inicia la música automáticamente al abrir el sobre (el clic en el sobre
+// cuenta como interacción del usuario, así que el navegador lo permite)
+function iniciarMusica(){
+  if(sonando) return;
+  const audio = document.getElementById('musica');
+  const btn = document.getElementById('musica-btn');
+  audio.play().then(()=>{
+    sonando = true;
+    btn.classList.add('sonando');
+    btn.textContent = '⏸';
+  }).catch(()=>{
+    // Si el navegador bloquea el autoplay, queda disponible el botón manual
+  });
+}
+
 function toggleMusica(){
   const audio = document.getElementById('musica');
   const btn = document.getElementById('musica-btn');
