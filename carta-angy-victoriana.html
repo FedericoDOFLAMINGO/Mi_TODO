@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para mi Angela 💌</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root{
+    --rosa: #ff8fab;
+    --rosa-suave: #ffe0eb;
+    --vino: #b3396b;
+    --crema: #fff6f2;
+    --dorado: #e8b4a0;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg, #ffd6e0, #ffb6c1, #ffc9de, #f7cad0);
+    background-size: 400% 400%;
+    animation: fondoMov 12s ease infinite;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    overflow:hidden;
+    position:relative;
+  }
+  @keyframes fondoMov{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+
+  /* corazones flotando */
+  .corazon{
+    position:absolute;
+    bottom:-50px;
+    color: rgba(255,255,255,0.8);
+    font-size: 20px;
+    animation: subir linear infinite;
+    pointer-events:none;
+    user-select:none;
+    filter: drop-shadow(0 0 3px rgba(255,255,255,0.5));
+  }
+  @keyframes subir{
+    0%{ transform: translateY(0) rotate(0deg); opacity:0; }
+    10%{ opacity:1; }
+    90%{ opacity:1; }
+    100%{ transform: translateY(-110vh) rotate(360deg); opacity:0; }
+  }
+
+  /* ---------- SOBRE ---------- */
+  #escenario{
+    position:relative;
+    width: min(90vw, 420px);
+    z-index: 2;
+  }
+
+  .sobre{
+    position:relative;
+    width:100%;
+    height: 260px;
+    cursor:pointer;
+    filter: drop-shadow(0 15px 25px rgba(179,57,107,0.35));
+    transition: transform .4s ease;
+  }
+  .sobre:hover{ transform: translateY(-6px) scale(1.02); }
+
+  .cuerpo-sobre{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: linear-gradient(160deg, #fff0f5, #ffe4ec);
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.6);
+  }
+
+  .solapa{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: linear-gradient(160deg, var(--rosa), var(--vino));
+    clip-path: polygon(0 0, 50% 55%, 100% 0);
+    transform-origin: top;
+    transition: transform .8s cubic-bezier(.68,-0.4,.27,1.4);
+    z-index:5;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .sello{
+    position:absolute;
+    top: 42%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width:64px; height:64px;
+    background: radial-gradient(circle at 35% 30%, #ff9fb8, var(--vino));
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 26px;
+    color:#fff;
+    box-shadow: 0 6px 12px rgba(179,57,107,0.5);
+    z-index:6;
+    animation: latido 1.6s ease-in-out infinite;
+  }
+  @keyframes latido{
+    0%,100%{ transform: translate(-50%,-50%) scale(1); }
+    50%{ transform: translate(-50%,-50%) scale(1.12); }
+  }
+
+  .texto-toque{
+    position:absolute;
+    bottom: -34px;
+    width:100%;
+    text-align:center;
+    color: var(--vino);
+    font-size: 14px;
+    letter-spacing: 1px;
+    opacity:.85;
+    animation: parpadeo 2s ease-in-out infinite;
+  }
+  @keyframes parpadeo{
+    0%,100%{ opacity:.5; }
+    50%{ opacity:1; }
+  }
+
+  /* estado abierto */
+  #escenario.abierto .solapa{
+    transform: rotateX(180deg);
+    z-index: 1;
+  }
+  #escenario.abierto .sello{ display:none; }
+  #escenario.abierto .texto-toque{ display:none; }
+
+  /* ---------- CARTA ---------- */
+  .carta{
+    position:absolute;
+    top: 6%;
+    left: 5%;
+    width:90%;
+    min-height: 200px;
+    background: var(--crema);
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    padding: 28px 24px 24px;
+    transform: translateY(0) scale(0.85);
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .9s ease, transform .9s cubic-bezier(.2,.9,.3,1.3);
+    z-index: 4;
+    max-height: 0;
+    overflow-y:auto;
+  }
+  #escenario.abierto .carta{
+    position: static;
+    margin: -30px auto 0;
+    transform: scale(1);
+    opacity:1;
+    pointer-events:auto;
+    max-height: 62vh;
+    z-index: 8;
+  }
+  .carta::-webkit-scrollbar{ width:6px; }
+  .carta::-webkit-scrollbar-thumb{ background: var(--rosa); border-radius:10px; }
+  .carta::-webkit-scrollbar-track{ background: transparent; }
+
+  #escenario.abierto .sobre{
+    height: auto;
+    display:flex;
+    flex-direction:column;
+  }
+  #escenario.abierto .cuerpo-sobre{
+    height: 60px;
+  }
+
+  .carta h2{
+    margin:0 0 14px;
+    text-align:center;
+    color: var(--vino);
+    font-family: 'Brush Script MT', cursive, 'Georgia', serif;
+    font-size: 30px;
+  }
+
+  .carta p{
+    color:#5a3a44;
+    line-height:1.75;
+    font-size:15.5px;
+    margin: 0 0 12px;
+    text-align: justify;
+  }
+
+  .firma{
+    text-align:right;
+    margin-top: 18px;
+    font-family: 'Brush Script MT', cursive, 'Georgia', serif;
+    font-size: 24px;
+    color: var(--vino);
+  }
+
+  .cursor{
+    display:inline-block;
+    width:2px;
+    background: var(--vino);
+    margin-left:2px;
+    animation: parpadeoCursor .8s step-end infinite;
+  }
+  @keyframes parpadeoCursor{
+    50%{ opacity:0; }
+  }
+
+  /* boton final */
+  .btn-final{
+    display:block;
+    margin: 18px auto 0;
+    background: linear-gradient(135deg, var(--rosa), var(--vino));
+    color:white;
+    border:none;
+    padding: 12px 26px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-family: 'Georgia', serif;
+    cursor:pointer;
+    box-shadow: 0 8px 18px rgba(179,57,107,0.4);
+    transition: transform .25s ease;
+    opacity:0;
+  }
+  .btn-final.show{
+    opacity:1;
+    animation: aparecer .6s ease forwards;
+  }
+  @keyframes aparecer{
+    from{ opacity:0; transform: translateY(10px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  .btn-final:hover{ transform: scale(1.06); }
+
+  /* overlay sorpresa */
+  #overlay{
+    position:fixed;
+    inset:0;
+    background: radial-gradient(circle at center, rgba(255,182,193,0.97), rgba(179,57,107,0.98));
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    z-index: 50;
+    text-align:center;
+    padding: 20px;
+  }
+  #overlay.show{ display:flex; animation: fundido .6s ease; }
+  @keyframes fundido{ from{opacity:0;} to{opacity:1;} }
+
+  #overlay h1{
+    color:white;
+    font-family: 'Brush Script MT', cursive, 'Georgia', serif;
+    font-size: 46px;
+    margin-bottom: 10px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  #overlay p{
+    color:#ffeef3;
+    max-width: 480px;
+    font-size: 16px;
+    line-height:1.7;
+  }
+  .cerrar-overlay{
+    margin-top: 24px;
+    background:white;
+    color: var(--vino);
+    border:none;
+    padding: 10px 22px;
+    border-radius:30px;
+    font-size:14px;
+    cursor:pointer;
+    font-family:'Georgia', serif;
+  }
+
+  .corazon-grande{
+    font-size: 70px;
+    animation: latido 1.2s ease-in-out infinite;
+    margin-bottom: 6px;
+  }
+
+  @media (max-width:480px){
+    .carta h2{ font-size:24px; }
+    .carta p{ font-size:14px; }
+  }
+
+  /* ---------- CONTENEDOR GENERAL ---------- */
+  body{
+    flex-direction: column;
+    padding: 60px 16px 80px;
+    height:auto;
+    min-height:100vh;
+  }
+
+  /* ---------- REPRODUCTOR DE MUSICA ---------- */
+  #musica-btn{
+    position:fixed;
+    top:18px;
+    right:18px;
+    width:52px; height:52px;
+    border-radius:50%;
+    background: linear-gradient(135deg, var(--rosa), var(--vino));
+    color:white;
+    border:none;
+    font-size:20px;
+    cursor:pointer;
+    box-shadow: 0 8px 18px rgba(179,57,107,0.45);
+    z-index: 60;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform .3s ease;
+  }
+  #musica-btn.sonando{
+    animation: girar 3s linear infinite;
+  }
+  @keyframes girar{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+  }
+
+  /* ---------- FOTO DENTRO DE LA DEDICATORIA ---------- */
+  .foto-dedicatoria{
+    width: min(80vw, 300px);
+    border-radius: 16px;
+    margin: 18px auto 4px;
+    display:block;
+    box-shadow: 0 18px 35px rgba(0,0,0,0.35);
+    border: 4px solid rgba(255,255,255,0.85);
+  }
+</style>
+</head>
+<body>
+
+<div id="lluvia"></div>
+
+<audio id="musica" src="beso.mp3" loop></audio>
+<button id="musica-btn" onclick="toggleMusica()">🎵</button>
+
+<div id="escenario">
+  <div class="sobre" id="sobre" onclick="abrirSobre()">
+    <div class="cuerpo-sobre"></div>
+    <div class="solapa"></div>
+    <div class="sello">♥</div>
+    <div class="carta" id="carta">
+      <h2>Para mi Angela</h2>
+      <p id="texto1"></p>
+      <p id="texto2"></p>
+      <p id="texto3"></p>
+      <div class="firma" id="firma" style="opacity:0;">Con todo mi corazón, Fer</div>
+      <button class="btn-final" id="btnFinal" onclick="mostrarOverlay()">Toca aquí, mi amor 💗</button>
+    </div>
+  </div>
+  <div class="texto-toque" id="textoToque">toca el sobre, mi vida ✨</div>
+</div>
+
+<div id="overlay">
+  <div class="corazon-grande">💗</div>
+  <h1>Te amo, Angela</h1>
+  <p>Eres mi persona favorita en este mundo, mi paz, mi risa, mi hogar. Quiero cada mañana contigo, cada plan, cada sueño cumplido de la mano. Gracias por existir y por dejarme amarte. Eres y serás siempre todo para mí.</p>
+  <img class="foto-dedicatoria" src="amor.jpg" alt="Nuestra foto">
+  <button class="cerrar-overlay" onclick="cerrarOverlay()">Cerrar</button>
+</div>
+
+<script>
+// lluvia de corazones de fondo
+const lluvia = document.getElementById('lluvia');
+const simbolos = ['♥','💗','💕','✨'];
+for(let i=0;i<28;i++){
+  const c = document.createElement('div');
+  c.className = 'corazon';
+  c.textContent = simbolos[Math.floor(Math.random()*simbolos.length)];
+  c.style.left = Math.random()*100 + 'vw';
+  c.style.fontSize = (14 + Math.random()*20) + 'px';
+  c.style.animationDuration = (6 + Math.random()*8) + 's';
+  c.style.animationDelay = (Math.random()*8) + 's';
+  lluvia.appendChild(c);
+}
+
+let abierto = false;
+function abrirSobre(){
+  if(abierto) return;
+  abierto = true;
+  document.getElementById('escenario').classList.add('abierto');
+  document.getElementById('textoToque').style.display = 'none';
+  setTimeout(escribirCartas, 500);
+}
+
+function escribirTexto(elId, texto, velocidad, callback){
+  const el = document.getElementById(elId);
+  el.innerHTML = '<span class="cursor">&nbsp;</span>';
+  let i = 0;
+  const intervalo = setInterval(()=>{
+    if(i < texto.length){
+      el.innerHTML = texto.slice(0,i+1) + '<span class="cursor">&nbsp;</span>';
+      i++;
+    } else {
+      clearInterval(intervalo);
+      el.innerHTML = texto;
+      if(callback) callback();
+    }
+  }, velocidad);
+}
+
+function escribirCartas(){
+  const t1 = "Mi amor, quiero que sepas que eres lo más hermoso que me ha pasado en la vida. Desde que llegaste, todo tiene más color, más sentido, más ganas de ser mejor cada día.";
+  const t2 = "Te amo con toda mi alma, mi corazón entero es tuyo. Eres mi sueño hecho realidad, mi persona favorita, mi lugar seguro. Quiero construir mi futuro entero a tu lado, envejecer contigo y seguir eligiéndote cada mañana.";
+  const t3 = "Gracias por existir, por amarme como lo haces, por ser mi compañera de vida. Eres todo lo que siempre voy a querer.";
+
+  escribirTexto('texto1', t1, 22, ()=>{
+    escribirTexto('texto2', t2, 20, ()=>{
+      escribirTexto('texto3', t3, 22, ()=>{
+        document.getElementById('firma').style.transition = 'opacity 1s ease';
+        document.getElementById('firma').style.opacity = 1;
+        document.getElementById('btnFinal').classList.add('show');
+      });
+    });
+  });
+}
+
+function mostrarOverlay(){
+  document.getElementById('overlay').classList.add('show');
+}
+function cerrarOverlay(){
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// Reproductor de musica
+let sonando = false;
+function toggleMusica(){
+  const audio = document.getElementById('musica');
+  const btn = document.getElementById('musica-btn');
+  if(sonando){
+    audio.pause();
+    btn.classList.remove('sonando');
+    btn.textContent = '🎵';
+  } else {
+    audio.play().catch(()=>{});
+    btn.classList.add('sonando');
+    btn.textContent = '⏸';
+  }
+  sonando = !sonando;
+}
+
+</script>
+
+</body>
+</html>
